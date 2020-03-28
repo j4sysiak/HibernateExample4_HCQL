@@ -1,10 +1,16 @@
 package pl.jaceksysiak;
 
-import org.hibernate.*;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 import pl.jaceksysiak.entity.Employee;
 
-public class MainClass_QueryData {
+public class MainClass__QueryData {
 
 	public static void main(String[] args) {
 
@@ -18,14 +24,20 @@ public class MainClass_QueryData {
 		Session session = factory.getCurrentSession();
 		
 		try {	
-		//-----------Employee	
-			Employee tmpEmployee=new Employee("Jack", 1200, 55);
-
 			// start a transaction
 			session.beginTransaction();
 			
-			// save the courses
-			session.save(tmpEmployee);
+		//-----------Query Employee Data
+			Criteria criteria = session.createCriteria(Employee.class); 
+
+			List<Employee> listEmpl = criteria.list();
+			
+			for(Employee tmpEmployee : listEmpl) {
+				System.out.println(tmpEmployee.getUsername());
+				System.out.println(tmpEmployee.getSalary());
+				System.out.println(tmpEmployee.getAge());
+				System.out.println("++++++++++++++++++++++++++++++++++++++++");
+			}
 			
 			// commit transaction
 			session.getTransaction().commit();
